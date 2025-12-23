@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Recognizer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=x7DSVZ6m"></script>
+    
+    <script type="module" src="app.js"></script>
+    
+    <link rel="icon" href="use.png" type="image/png">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="brand">
+                <img src="use.png" class="logo-icon" alt="Logo">
+                <div class="brand-text">
+                    <h1>American Sign Language Recognizer</h1>
+                </div>
+            </div>
+            <nav class="app-nav">
+            </nav>
+        </header>
+
+        <main class="app-content">
+            <div class="panel video-panel">
+                <div class="panel-header">
+                    <h2>Live Feed</h2>
+                    <div class="status-badge" id="statusIndicator">
+                        <span class="dot"></span>
+                        <span id="statusText">Initializing...</span>
+                    </div>
+                </div>
+
+                <div class="video-wrapper">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas"></canvas>
+                </div>
+
+                <div class="instructions-mini">
+                    <p>Place hand within frame to detect ASL letters.</p>
+                </div>
+            </div>
+
+            <div class="panel results-panel">
+                <div class="prediction-card">
+                    <div class="card-header-row">
+                        <div class="card-label">Recognized Symbol</div>
+                    </div>
+
+                    <div class="symbol-display" id="currentLetter">-</div>
+
+                    <div class="confidence-bar-wrapper">
+                        <div class="confidence-label">Confidence</div>
+                        <div class="confidence-value" id="confidence">0%</div>
+                    </div>
+                </div>
+
+                <div class="buffer-section">
+                    <div class="buffer-header">
+                        <div class="section-label">Composition Buffer</div>
+                        <div class="ai-control">
+                            <span class="ai-label">Intelligent Detection</span>
+                            <label class="switch">
+                                <input type="checkbox" id="aiToggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="buffer-display" id="letterBuffer">
+                        <span class="placeholder">Waiting...</span>
+                    </div>
+
+                    <div class="ai-correction-display" id="aiResultDisplay" style="display: none;">
+                        <span class="ai-original" id="aiOriginal">RAW</span>
+                        <span class="ai-arrow">➔</span>
+                        <span class="ai-result" id="aiFinal">FIXED</span>
+                    </div>
+                    <div class="buffer-controls">
+                        <button id="backspaceBtn" class="btn btn-icon" title="Backspace">
+                            ⌫
+                        </button>
+                        <button id="spaceBtn" class="btn btn-primary">
+                            Confirm Word
+                        </button>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <div class="section-label">Session History</div>
+                    <div class="words-display" id="completedWords">
+                        <span class="placeholder">No words confirmed yet</span>
+                    </div>
+                    <button id="clearBtn" class="btn btn-ghost btn-sm">
+                        Clear History
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2025 ASL Recognition System • v1.3 (Clean Build) • DeepLearning Powered</p>
+        </footer>
+    </div>
+    </body>
+
+</html>
