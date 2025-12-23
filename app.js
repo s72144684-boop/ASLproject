@@ -241,21 +241,19 @@ function handleLetterConfirmation(prediction, confidence) {
     }
 
     if (confirmationCount >= CONFIG.CONFIRMATION_THRESHOLD && !letterJustAdded) {
-        performAction(prediction); // 修正：呼叫動作處理函式，而非直接 push
+        performAction(prediction); 
 
-        // UI 動畫
         currentLetterDisplay.classList.add('confirmed');
         setTimeout(() => currentLetterDisplay.classList.remove('confirmed'), 300);
 
         letterJustAdded = true;
-        cooldownCount = 10; // 約 1 秒冷卻 (基於 PROCESS_INTERVAL 100ms)
+        cooldownCount = 10; 
         confirmationCount = 0;
     }
 }
 
-// 新增：處理動作與字母的邏輯
 function performAction(prediction) {
-    if (prediction === 'nothing') return; // 忽略 nothing
+    if (prediction === 'nothing') return; 
     
     if (prediction === 'space') {
         confirmWord();
@@ -270,7 +268,6 @@ function performAction(prediction) {
         return;
     }
 
-    // 一般字母才加入 Buffer
     letterBuffer.push(prediction);
     updateLetterBuffer();
 }
@@ -280,7 +277,7 @@ function handleNoHand() {
     currentLetterDisplay.textContent = '-';
     confidenceDisplay.textContent = 'Confidence: --%';
 
-    if (noHandCount >= 10) { // 稍微放寬重置條件
+    if (noHandCount >= 10) { 
         letterJustAdded = false;
         lastConfirmedLetter = null;
         confirmationCount = 0;
@@ -288,7 +285,7 @@ function handleNoHand() {
 
     if (noHandCount >= CONFIG.NO_HAND_THRESHOLD && letterBuffer.length > 0) {
         confirmWord();
-        noHandCount = 0; // 重置計數，避免重複提交
+        noHandCount = 0; 
     }
 }
 
@@ -300,7 +297,6 @@ function updateLetterBuffer() {
     }
 }
 
-// 補回遺失的核心函式：確認單字
 function confirmWord() {
     if (letterBuffer.length === 0) return;
 
@@ -390,7 +386,6 @@ function speakWord(word) {
                 pitch: 1,
                 rate: 0.9,
                 volume: 1,
-                // 修正：僅記錄錯誤，不呼叫不存在的備援函式
                 onerror: (e) => console.warn('ResponsiveVoice 播放失敗:', e)
             });
         } catch (e) {
